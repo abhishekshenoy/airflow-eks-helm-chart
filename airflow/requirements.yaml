@@ -17,6 +17,6 @@
 
 dependencies:
   - name: postgresql
-    version: 6.3.12
-    repository: "@stable"
+    version: 10
+    repository: "http://localhost:5000"
     condition: postgresql.enabled
