@@ -28,11 +28,10 @@ gid: 50000
 airflowHome: "/opt/airflow"
 
 # Default airflow repository -- overrides all the specific images below
-defaultAirflowRepository: apache/airflow
+defaultAirflowRepository: registry:5000/airflow-image
 
 # Default airflow tag to deploy
-defaultAirflowTag: 1.10.10.1-alpha2-python3.6
-
+defaultAirflowTag: 1.0.0
 
 # Select certain nodes for airflow pods.
 nodeSelector: {}
@@ -44,7 +43,6 @@ labels: {}
 
 # Ingress configuration
 ingress:
-
   # Enable ingress resource
   enabled: false
 
@@ -63,7 +61,6 @@ ingress:
 networkPolicies:
   # Enabled network policies
   enabled: false
-
 
 # Extra annotations to apply to all
 # Airflow pods
@@ -109,7 +106,15 @@ images:
     pullPolicy: IfNotPresent
 
 # Environment variables for all airflow containers
-env: []
+env:
+  - name: "AIRFLOW__KUBERNETES__WORKER_CONTAINER_REPOSITORY"
+    value: "registry:5000/airflow-image"
+  - name: "AIRFLOW__KUBERNETES__WORKER_CONTAINER"
+    value: "1.0.0"
+  - name: "AIRFLOW__KUBERNETES__RUN_AS_USER"
+    value: "50000"
+  - name: "AIRFLOW__KUBERNETES__DAGS_IN_IMAGE"
+    value: "TRUE"
 # - name: ""
 #   value: ""
 
@@ -332,7 +337,8 @@ pgbouncer:
     config:
       maxUnavailable: 1
 
-  resources: {}
+  resources:
+    {}
     # limits:
     #   cpu: 100m
     #   memory: 128Mi
@@ -384,7 +390,8 @@ redis:
 registry:
   secretName: ~
 
-  connection: {}
+  connection:
+    {}
     # user: ~
     # pass: ~
     # host: ~
@@ -397,7 +404,8 @@ elasticsearch:
   # A secret containing the connection
   secretName: ~
   # Or an object representing the connection
-  connection: {}
+  connection:
+    {}
     # user: ~
     # pass: ~
     # host: ~
